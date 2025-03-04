@@ -2,21 +2,21 @@
 #
 # Copyright (c) 2015, Jon Nall
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
-# 
+#
 # * Redistributions of source code must retain the above copyright notice, this
 #   list of conditions and the following disclaimer.
-# 
+#
 # * Redistributions in binary form must reproduce the above copyright notice,
 #   this list of conditions and the following disclaimer in the documentation
 #   and/or other materials provided with the distribution.
-# 
+#
 # * Neither the name of tradervue-utils nor the names of its
 #   contributors may be used to endorse or promote products derived from
 #   this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -88,7 +88,7 @@ class Tradervue:
   """
   MAX_ALLOWED_OBJECT_REQUEST = 500
 
-  def __init__(self, username, password, user_agent, target_user = None, baseurl = 'https://www.tradervue.com', verbose_http = False):
+  def __init__(self, username, password, user_agent, target_user = None, baseurl = 'https://app.tradervue.com', verbose_http = False):
     """Construct a Tradervue instance.
 
        :param str username: the Tradervue username
@@ -164,7 +164,7 @@ class Tradervue:
         server_error = r.text
     except ValueError as e:
       server_error = r.text
-      
+
     self.log.error(msg)
     self.log.error(status)
     self.log.error("Server error: %s" % (server_error))
@@ -341,7 +341,7 @@ class Tradervue:
   def get_trades(self, symbol = None, tag_expr = None, side = None, duration = None, startdate = None, enddate = None, winners = None, include_comments = False, include_executions = False, max_trades = 25, offset = 0):
     """Query for trades matching the specified criteria.
 
-       All arguments to this method are optional. If not specified, they are not part of the query. 
+       All arguments to this method are optional. If not specified, they are not part of the query.
 
        The list returned from this method contains dict objects which have fields as defined in the `Tradervue Trade Documentation <https://github.com/tradervue/api-docs/blob/master/trades.md>`_.
 
@@ -468,7 +468,7 @@ class Tradervue:
     result = self.__get_object('imports', None, None)
     if not 'status' in result:
       self.log.error("Unable to find 'status' key in result: %s" % (result))
-      return None 
+      return None
     elif not result['status'] in ['ready', 'queued', 'processing', 'succeeded', 'failed' ]:
       self.log.error("Unexpected status '%s' for import status. Check API and update library. Result = %s" % (status, result))
       return None
@@ -500,7 +500,7 @@ class Tradervue:
     if tags is not None:
       if not isinstance(tags, list):
         raise TypeError("The tags argument (if specified) to import_executions must be a list, but found %s" % (type(tags)))
-    
+
     data = { 'executions': copy.deepcopy(executions), 'allow_duplicates': allow_duplicates, 'overlay_commissions': overlay_commissions }
 
     # TV doesn't automatically add the account_tag. It must be explicitly added to the tags list
@@ -540,7 +540,7 @@ class Tradervue:
 
     if not import_posted:
       self.log.error("Unable to import executions after %d attempts. Giving up." % (import_retries))
-      return False 
+      return False
     elif wait_for_completion:
       self.log.debug("Waiting for import to complete...")
 
@@ -649,7 +649,7 @@ class Tradervue:
   def get_journals(self, date = None, startdate = None, enddate = None, include_comments = False, max_journals = 25, offset = 0):
     """Query for journal entries matching the specified criteria.
 
-       All arguments to this method are optional. If not specified, they are not part of the query. 
+       All arguments to this method are optional. If not specified, they are not part of the query.
 
        The list returned from this method contains dict objects which have fields as defined in the `Tradervue Journal Documentation <https://github.com/tradervue/api-docs/blob/master/journal.md>`_.
 
